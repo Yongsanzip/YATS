@@ -7,6 +7,7 @@
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!--JavaScript at end of body for optimized loading-->
     <script type="text/javascript" src="js/bin/materialize.min.js"></script>
@@ -14,6 +15,32 @@
         $(document).ready(function(){
             main_page_init();
         });
+
+        function send(){
+            $.ajax({
+                type: "POST",
+                url: "{{route('fsgsdfdsfsad')}}",
+                data_type: 'json',
+                data: {
+                    method: "POST",
+                    url: $("#autocomplete-input").val()
+                },
+                datatype: "text",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (e) {
+                    //alert("good");
+                    console.log("done");
+                    console.log(e);
+                },
+                error: function(e){
+                    console.log("nope");
+                    console.log(e);
+                    //alert("fuck");
+                }
+            })
+        }
     </script>
 </head>
 <body>
@@ -79,7 +106,7 @@
         <div class="row valign-wrapper center-align">
             <div class="input-field col s9">
                 <i class="material-icons prefix">web</i>
-                <input type="text" id="autocomplete-input" class="autocomplete">
+                <input name="urls" type="text" id="autocomplete-input" class="autocomplete">
                 <label for="autocomplete-input">URL</label>
             </div>
             <div class="col s3 valign-wrapper">

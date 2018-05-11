@@ -7,4 +7,8 @@
  */
 $t = new \App\Http\Controllers\ApiController();
 
-$t->sendHttpMessage();
+$api = array(
+    'url' => '',
+    ''
+);
+$t->send();
