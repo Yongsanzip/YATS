@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use HttpMessage;
+
 
 
 
@@ -16,24 +16,19 @@ class ApiController extends Controller
 
     }
 
-    public function sendHttpMessage($params) {
-        $message = new \HttpMessage();
-        /*
-        //파라미터들의 position의 값에 따라 헤더, 바디로 넣는다.
-        foreach ($params as $param) {
-            switch ($param->position) {
-                case 'header' :
-                    $message->setHeaders();
-                    break;
+    public function sendHttpMessage($api) {
+        $curl = curl_init();
+        $url = "https://carderla.co.kr/index.php/Car/getCar";
+        $data = array(
+            'test' => 'test'
+        );
 
-                case 'body' :
-                    $message->setBody();
-                    break;
-            }
-        }
-        */
-        $message->setRequestUrl($params['url']);
-        return $message->getRequestUrl();
-        //return $message->getResponseCode();
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, $data);
+        $res = curl_exec($curl);
+        var_dump($res);
+        curl_close($curl);
     }
+
+
 }
