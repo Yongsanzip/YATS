@@ -1,0 +1,31 @@
+
+.content{
+  text-align: center;
+}
+.start-txt{
+  margin: 150px 0px 100px; font-size: 50px; font-weight: bolder;
+}
+.p-color{
+  color: #3a557d;
+}
+.api-card{
+  margin: auto;
+  width: 50%;
+}
+.del-row{
+  cursor: pointer;
+}
+nav{
+  background-color: #3a557d;
+}
+.nation-row{
+  width: 25px;
+  height: 25px;
+}
+#dropdown_nation{
+  min-width: 110px;
+}
+#dropdown_nation a{
+  min-width: 110px;
+  color: #3a557d;
+}
