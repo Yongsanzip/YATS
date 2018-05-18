@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Library\Anyalazum;
@@ -6,10 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\ResponseFactory;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rules\In;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-class ApiController extends Controller
+class ApisController extends Controller
 {
     //
     public $PARAMS;
@@ -23,7 +25,7 @@ class ApiController extends Controller
         $header = array();
         if (is_array($headers)) {
             foreach ($headers as $key => $value) {
-                $header = $an->array_push_assoc($header, $key, $value->key.":".$value->data);
+                $header = $an->array_push_assoc($header, $value['key'], $value['data']);
             }
         }
 
@@ -40,7 +42,6 @@ class ApiController extends Controller
                 }
             }
         }
-        //$datas  = $an->array_push_assoc($datas,'video',$_FILES['video']);
 
         $response = '';
         $responseCode = '';
@@ -50,13 +51,21 @@ class ApiController extends Controller
                 $datas = rawurldecode(http_build_query($datas));
                 $url = $url.'?'.$datas;
                 curl_setopt($curl, CURLOPT_URL, $url);
-                curl_setopt($curl, CURLOPT_HTTPHEADER, array("content-type::multipart/form-data"));
                 curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
                 curl_setopt($curl, CURLOPT_HTTPGET, true);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                 $response = curl_exec($curl);
-                $responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-                curl_close($curl);
 
+                $responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+                curl_close($curl);
+                echo $response;
+                $output = json_encode(array(
+                    'response' => json_decode($response),
+                    'responseCode' => $responseCode
+                ));
+
+                return $output;
                 break;
             case 'POST' :
                 foreach ($fileDatas as $key => $value) {
@@ -69,9 +78,15 @@ class ApiController extends Controller
                 curl_setopt($curl, CURLOPT_POSTFIELDS, $datas);
                 curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
                 curl_setopt($curl, CURLOPT_POST, true);
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                 $response = curl_exec($curl);
-                echo $response;
+                $responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
                 curl_close($curl);
+
+                return json_encode(array(
+                    'response' => json_decode($response),
+                    'responseCode' => $responseCode
+                ));
                 break;
             case 'PUT' :
                 foreach ($fileDatas as $key => $value) {
@@ -84,9 +99,15 @@ class ApiController extends Controller
                 curl_setopt($curl, CURLOPT_POSTFIELDS, $datas);
                 curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PUT");
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                 $response = curl_exec($curl);
                 $responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
                 curl_close($curl);
+
+                return json_encode(array(
+                    'response' => json_decode($response),
+                    'responseCode' => $responseCode
+                ));
                 break;
             case  'DELETE' :
                 foreach ($fileDatas as $key => $value) {
@@ -99,9 +120,15 @@ class ApiController extends Controller
                 curl_setopt($curl, CURLOPT_POSTFIELDS, $datas);
                 curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
                 $response = curl_exec($curl);
                 $responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
                 curl_close($curl);
+
+                return json_encode(array(
+                    'response' => json_decode($response),
+                    'responseCode' => $responseCode
+                ));
                 break;
             case 'PATCH' :
                 foreach ($fileDatas as $key => $value) {
@@ -114,17 +141,28 @@ class ApiController extends Controller
                 curl_setopt($curl, CURLOPT_POSTFIELDS, $datas);
                 curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PATCH");
+                curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 
                 $response = curl_exec($curl);
                 $responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
                 curl_close($curl);
+
+                return json_encode(array(
+                    'response' => json_decode($response),
+                    'responseCode' => $responseCode
+                ));
                 break;
 
             default :
-                return view('error');
+                curl_close($curl);
+                $output = response()->view('405');
                 break;
         }
 //*/
+    }
+
+    public function list() {
+
     }
 
 }
