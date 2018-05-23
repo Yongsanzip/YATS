@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Api;
-use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ApisController;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -20,7 +20,7 @@ class apiControllerTest extends TestCase
      */
     public function testsendHttpMessage()
     {
-        $t = new ApiController();
+        $t = new ApisController();
         $test = array(
             'url' => 'https://carderla.co.kr/index.php/Car/getCar',
             //'position' => 'body',

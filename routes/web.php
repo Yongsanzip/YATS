@@ -15,11 +15,25 @@ Route::get('/', function () {
     return view('main');
 });
 
-Route::get('/test', function () {
+Route::any('/test', function () {
     return view('testView');
 });
 
 Route::post('/api/send', [
     'as' => 'fsgsdfdsfsad',
-    'uses' => 'ApiController@send'
+    'uses' => 'ApisController@send'
 ]);
+
+Route::get('lists/projects/{userId}', 'ListsController@project');
+Route::get('lists/categories/{projectId}/{userId}', 'ListsController@category');
+Route::get('lists/apis/{categoryId}/{userId}','ListsController@api');
+Route::get('lists/params/{apiId}/{userId}','ListsController@param');
+Route::get('lists/members/{projectId}/{userId}','ListsController@member');
+
+Route::get('lists/{userId}', 'ListsController@index');
+
+
+Route::any('405', function () {
+    return view('405');
+});
+

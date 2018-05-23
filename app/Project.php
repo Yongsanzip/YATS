@@ -18,6 +18,4 @@ class Project extends Model
     public function projectPermissionXref() {
         return $this->hasMany('App\Project_Permission_Xref');
     }
-
-
 }

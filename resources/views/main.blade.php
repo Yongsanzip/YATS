@@ -23,9 +23,15 @@
                 data_type: 'json',
                 data: {
                     method: "POST",
-                    url: $("#autocomplete-input").val()
+                    url: $("#autocomplete-input").val(),
+                    datas: JSON.stringify([
+
+                        {key: "뭐시기", data: "892045rd98b", data_type: "text"},
+                        {key: "뭐시기", data: "892045rd98b", data_type: "file"}
+
+                    ])
                 },
-                datatype: "text",
+                datatype: "json",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
